@@ -1,0 +1,270 @@
+                         WARNING!!!!
+
+ This is a sandbox environment. Using personal credentials
+ is HIGHLY! discouraged. Any consequences of doing so, are
+ completely the user's responsibilites.
+
+ You can bootstrap a cluster as follows:
+
+ 1. Initializes cluster master node:
+
+ kubeadm init --apiserver-advertise-address $(hostname -i)
+
+
+ 2. Initialize cluster networking:
+
+ kubectl apply -n kube-system -f \
+    "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 |tr -d '\n')"
+
+
+ 3. (Optional) Create an nginx deployment:
+
+ kubectl apply -f https://raw.githubusercontent.com/kubernetes/website/master/content/en/examples/application/nginx-app.yaml
+
+
+                          The PWK team.
+
+
+
+
+
+kubeadm init --apiserver-advertise-address 192.168.0.8
+
+kubeadm join 192.168.0.8:6443 --token z58yia.zzq0cz1xpdetb7dy --discovery-token-ca-cert-hash sha256:5d526c9cdba9713c90f041d74d7ac90c30719a09fcacbc14e3c0d6d961eaf335
+
+kubectl apply -n kube-system -f \
+    "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 |tr -d '\n')"
+
+
+
+kubeadm init --apiserver-advertise-address=192.168.0.13 --pod-network-cidr=192.168.1.0/16
+
+
+mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+  kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+
+  kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+
+
+  ip172-18-0-7-bfg5j3ao2l8g00be5ps0.direct.labs.play-with-k8s.com:8001
+
+
+
+ Minikube Tutorials
+
+ $ kubectl version
+ $ kubectl cluster-info
+
+ $ kubectl cluster-info
+Kubernetes master is running at https://172.17.0.32:8443
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+
+$kubectl get nodes
+
+This provides a self-healing mechanism to address machine failure or maintenance.
+
+kubectl action source this main format for kubectl command
+
+
+$ kubectl get nodes --help
+Display one or many resources
+
+Prints a table of the most important information about the specified resources.
+You can filter the list using a label selector and the --selector flag. If the
+desired resource type is namespaced you will only see results in your current
+namespace unless you pass --all-namespaces.
+
+Uninitialized objects are not shown unless --include-uninitialized is passed.
+
+By specifying the output as 'template' and providing a Go template as the value
+of the --template flag, you can filter the attributes of the fetched resources.
+
+Use "kubectl api-resources" for a complete list of supported resources.
+
+Examples:
+  # List all pods in ps output format.
+  kubectl get pods
+
+  # List all pods in ps output format with more information (such as node name).
+  kubectl get pods -o wide
+
+  # List a single replication controller with specified NAME in ps output
+format.
+  kubectl get replicationcontroller web
+
+  # List deployments in JSON output format, in the "v1" version of the "apps"
+API group:
+ kubectl get deployments.v1.apps -o json
+
+  # List a single pod in JSON output format.
+  kubectl get -o json pod web-pod-13je7
+
+  # List a pod identified by type and name specified in "pod.yaml" in JSON
+output format.
+  kubectl get -f pod.yaml -o json
+
+  # Return only the phase value of the specified pod.
+  kubectl get -o template pod/web-pod-13je7 --template={{.status.phase}}
+
+  # List all replication controllers and services together in ps output format.
+  kubectl get rc,services
+
+  # List one or more resources by their type and names.
+  kubectl get rc/web service/frontend pods/web-pod-13je7
+
+Options:
+      --all-namespaces=false: If present, list the requested object(s) across
+all namespaces. Namespace in current context is ignored even if specified with
+--namespace.
+   --allow-missing-template-keys=true: If true, ignore any errors in
+templates when a field or map key is missing in the template. Only applies to
+golang and jsonpath output formats.
+      --chunk-size=500: Return large lists in chunks rather than all at once.
+Pass 0 to disable. This flag is beta and may change in the future.
+      --export=false: If true, use 'export' for the resources.  Exported
+resources are stripped of cluster-specific information.
+      --field-selector='': Selector (field query) to filter on, supports '=',
+'==', and '!='.(e.g. --field-selector key1=value1,key2=value2). The server only
+supports a limited number of field queries per type.
+  -f, --filename=[]: Filename, directory, or URL to files identifying the
+resource to get from a server.
+      --ignore-not-found=false: If the requested object does not exist the
+command will return exit code 0.
+      --include-uninitialized=false: If true, the kubectl command applies to
+uninitialized objects. If explicitly set to false, this flag overrides other
+flags that make the kubectl commands apply to uninitialized objects, e.g.,
+"--all". Objects with empty metadata.initializers are regarded as initialized.
+  -L, --label-columns=[]: Accepts a comma separated list of labels that are
+going to be presented as columns. Names are case-sensitive. You can also use
+multiple flag options like -L label1 -L label2...
+      --no-headers=false: When using the default or custom-column output format,
+don't print headers (default print headers).
+  -o, --output='': Output format. One of:
+json|yaml|wide|name|custom-columns=...|custom-columns-file=...|go-template=...|go-template-file=...|jsonpath=...|jsonpath-file=...
+See custom columns
+[http://kubernetes.io/docs/user-guide/kubectl-overview/#custom-columns], golang
+template [http://golang.org/pkg/text/template/#pkg-overview] and jsonpath
+template [http://kubernetes.io/docs/user-guide/jsonpath].
+      --raw='': Raw URI to request from the server.  Uses the transport
+specified by the kubeconfig file.
+ -R, --recursive=false: Process the directory used in -f, --filename
+recursively. Useful when you want to manage related manifests organized within
+the same directory.
+  -l, --selector='': Selector (label query) to filter on, supports '=', '==',
+and '!='.(e.g. -l key1=value1,key2=value2)
+      --server-print=true: If true, have the server return the appropriate table
+output. Supports extension APIs and CRDs.
+      --show-kind=false: If present, list the resource type for the requested
+object(s).
+      --show-labels=false: When printing, show all labels as the last column
+(default hide labels column)
+      --sort-by='': If non-empty, sort list types using this field
+specification.  The field specification is expressed as a JSONPath expression
+(e.g. '{.metadata.name}'). The field in the API resource specified by this
+JSONPath expression must be an integer or a string.
+
+      --template='': Template string or path to template file to use when
+-o=go-template, -o=go-template-file. The template format is golang templates
+[http://golang.org/pkg/text/template/#pkg-overview].
+      --use-openapi-print-columns=false: If true, use x-kubernetes-print-column
+metadata (if present) from the OpenAPI schema for displaying a resource.
+  -w, --watch=false: After listing/getting the requested object, watch for
+changes. Uninitialized objects are excluded if no object name is provided.
+      --watch-only=false: Watch for changes to the requested object(s), without
+listing/getting first.
+
+Usage:
+  kubectl get
+[(-o|--output=)json|yaml|wide|custom-columns=...|custom-columns-file=...|go-template=...|go-template-file=...|jsonpath=...|jsonpath-file=...]
+(TYPE[.VERSION][.GROUP] [NAME | -l label] | TYPE[.VERSION][.GROUP]/NAME ...)
+[flags] [options]
+
+Use "kubectl options" for a list of global command-line options (applies to all
+commands).
+
+
+$kubectl api-resources
+
+$kubectl run kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1 --port=8080
+$kubectl get deployments
+
+
+
+A Pod always runs on a Node. A Node is a worker machine in Kubernetes and may be either a virtual or a physical machine,
+depending on the cluster. Each Node is managed by the Master. A Node can have multiple pods, and the Kubernetes master 
+automatically handles scheduling the pods across the Nodes in the cluster. The Master's automatic scheduling takes into account 
+the available resources on each Node.
+
+Kubelet, a process responsible for communication between the Kubernetes Master and the Node; it manages the Pods and the containers 
+running on a machine.
+
+$kubectl get pods
+$kubectl describe pods
+
+$kubectl run hello --image=hello-world
+
+$export POD_NAME=$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
+$echo Name of the Pod: $POD_NAME
+
+$curl http://localhost:8001/api/v1/namespaces/default/pods/$POD_NAME/proxy/
+
+$kubectl logs <pod-name>
+
+kubectl exec $POD_NAME env
+
+kubectl exec -ti $POD_NAME bash
+
+kubectl get services
+
+kubectl expose deployment/kubernetes-bootcamp --type="NodePort" --port 8080
+
+kubectl describe services/kubernetes-bootcamp
+
+
+export NODE_PORT=$(kubectl get services/kubernetes-bootcamp -o go-template='{{(index .spec.ports 0).nodePort}}')
+$ echo NODE_PORT=$NODE_PORT
+
+kubectl describe deployment
+
+kubectl get pods -l run=kubernetes-bootcamp
+
+kubectl get services -l run=kubernetes-bootcamp
+
+export POD_NAME=$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
+$ echo Name of the Pod: $POD_NAME
+
+kubectl get deployments
+
+The DESIRED state is showing the configured number of replicas
+
+The CURRENT state show how many replicas are running now
+
+The UP-TO-DATE is the number of replicas that were updated to match the desired (configured) state
+
+The AVAILABLE state shows how many replicas are actually AVAILABLE to the users
+
+
+$kubectl scale deployments/kubernetes-bootcamp --replicas=4
+
+$export NODE_PORT=$(kubectl get services/kubernetes-bootcamp -o go-template='{{(index .spec.ports 0).nodePort}}')
+echo NODE_PORT=$NODE_PORT
+
+ kubectl scale deployments/kubernetes-bootcamp --replicas=2
+deployment.extensions/kubernetes-bootcamp scaled
+$ kubectl get deployments
+NAME                  DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+kubernetes-bootcamp   2         2         2            2           39m
+$ kubectl get pods -o wide
+NAME                                   READY     STATUS    RESTARTS   AGE       IP        NODE
+kubernetes-bootcamp-5c69669756-ghjhf   1/1       Running   0          39m       172.18.0.2   minikube
+kubernetes-bootcamp-5c69669756-pgtxt   1/1       Running   0          8s        172.18.0.5   minikube
+
+
+$kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
+
+kubectl rollout status deployments/kubernetes-bootcamp
